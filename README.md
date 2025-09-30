@@ -41,10 +41,10 @@ La aplicación se despliega en EC2 y se mantiene actualizada automáticamente me
 Para la primera instancia EC2, se hace una creacion de forma manual y via terminal se clona el repo, se instalan las dependencias necesarias, y se configura el **nohup** para que corra constantemente
 
 EC2 corriendo
-![EC2 corriendo]("ec2-running.png")
+![EC2 corriendo](ec2-running.png)
 
 EC2 corriendo con nohup
-![EC2 corriendo con nohup]("ec2-running-nohup.png")
+![EC2 corriendo con nohup](ec2-running-nohup.png)
 
 1. **Setup inicial en EC2**:
 
@@ -65,12 +65,14 @@ EC2 corriendo con nohup
 
 En este paso se crea una instancia configurada de igual forma que en paso anterior pero dichos comandos se hacen ejecutar al momento de crear la instancia. Esto se hace agregando la secuencia de comandos en una caja al final de la configuracion inicial de la instancia EC2.
 
+```
 #!/bin/bash
 sudo apt update && sudo apt upgrade -y
 git clone https://github.com/sottati/inventory.git
 sudo apt install npm -y
 cd inventory
 npm run start
+```
 
 ### Elastic Beanstalk Deployment
 
@@ -81,7 +83,7 @@ Deployment gestionado por AWS:
 3. **Deploy** mediante CLI o consola web
 
 EC2 corriendo con nohup
-![Elastic Beanstalk]("elastic-beanstalk.png")
+![Elastic Beanstalk](elastic-beanstalk.png)
 
 ### Security Groups AWS
 
@@ -89,4 +91,10 @@ EC2 corriendo con nohup
 
 - PostgreSQL (5432) desde EC2 Security Group o VPC
 
-## 🎓 Propósito Académico
+```bash
+# Ejemplo de configuración de Security Group
+Type: PostgreSQL
+Protocol: TCP
+Port Range: 5432
+Source: sg-xxxxxxxxx (EC2 Security Group)
+```
