@@ -82,7 +82,7 @@ Deployment gestionado por AWS:
 2. **Configurar variables de entorno** en la consola de EB
 3. **Deploy** mediante CLI o consola web
 
-EC2 corriendo con nohup
+Elastic Beanstalk
 ![Elastic Beanstalk](elastic-beanstalk.png)
 
 ### Security Groups AWS
