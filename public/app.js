@@ -1,15 +1,15 @@
 const { useState, useEffect } = React;
 
-const API_BASE = '/api';
+const API_BASE = "/api";
 
 // Product Form Component
 const ProductForm = ({ product, onSave, onCancel }) => {
   const [formData, setFormData] = useState({
-    name: '',
-    category: '',
+    name: "",
+    category: "",
     quantity: 0,
     price: 0,
-    description: ''
+    description: "",
   });
 
   useEffect(() => {
@@ -21,28 +21,30 @@ const ProductForm = ({ product, onSave, onCancel }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const url = product ? `${API_BASE}/products/${product.id}` : `${API_BASE}/products`;
-      const method = product ? 'PUT' : 'POST';
-      
+      const url = product
+        ? `${API_BASE}/products/${product.id}`
+        : `${API_BASE}/products`;
+      const method = product ? "PUT" : "POST";
+
       const response = await fetch(url, {
         method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
       });
-      
+
       if (response.ok) {
         onSave();
       }
     } catch (error) {
-      console.error('Error saving product:', error);
+      console.error("Error saving product:", error);
     }
   };
 
   const handleChange = (e) => {
     const { name, value, type } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === 'number' ? parseFloat(value) || 0 : value
+      [name]: type === "number" ? parseFloat(value) || 0 : value,
     }));
   };
 
@@ -50,7 +52,7 @@ const ProductForm = ({ product, onSave, onCancel }) => {
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-lg p-6 w-full max-w-md">
         <h2 className="text-xl font-bold mb-4">
-          {product ? 'Edit Product' : 'Add Product'}
+          {product ? "Edit Product" : "Add Product"}
         </h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
@@ -108,7 +110,9 @@ const ProductForm = ({ product, onSave, onCancel }) => {
             </div>
           </div>
           <div className="mb-6">
-            <label className="block text-sm font-medium mb-2">Description</label>
+            <label className="block text-sm font-medium mb-2">
+              Description
+            </label>
             <textarea
               name="description"
               value={formData.description}
@@ -163,11 +167,15 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
       <p className="text-sm mb-2">{product.description}</p>
       <div className="flex justify-between items-center">
         <span className="font-bold text-green-600">${product.price}</span>
-        <span className={`px-2 py-1 rounded text-sm ${
-          product.quantity > 10 ? 'bg-green-100 text-green-800' : 
-          product.quantity > 0 ? 'bg-yellow-100 text-yellow-800' : 
-          'bg-red-100 text-red-800'
-        }`}>
+        <span
+          className={`px-2 py-1 rounded text-sm ${
+            product.quantity > 10
+              ? "bg-green-100 text-green-800"
+              : product.quantity > 0
+              ? "bg-yellow-100 text-yellow-800"
+              : "bg-red-100 text-red-800"
+          }`}
+        >
           Stock: {product.quantity}
         </span>
       </div>
@@ -211,7 +219,9 @@ const DashboardStats = ({ stats }) => {
           <i className="fas fa-dollar-sign text-yellow-500 text-2xl mr-3"></i>
           <div>
             <p className="text-sm text-gray-600">Total Value</p>
-            <p className="text-2xl font-bold">${(stats.total_value || 0).toFixed(2)}</p>
+            <p className="text-2xl font-bold">
+              ${(stats.total_value || 0).toFixed(2)}
+            </p>
           </div>
         </div>
       </div>
@@ -225,8 +235,8 @@ const App = () => {
   const [stats, setStats] = useState({});
   const [showForm, setShowForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   useEffect(() => {
     loadProducts();
@@ -235,12 +245,12 @@ const App = () => {
   }, []);
 
   const registerServiceWorker = async () => {
-    if ('serviceWorker' in navigator) {
+    if ("serviceWorker" in navigator) {
       try {
-        await navigator.serviceWorker.register('/sw.js');
-        console.log('SW registered');
+        await navigator.serviceWorker.register("/sw.js");
+        console.log("SW registered");
       } catch (error) {
-        console.log('SW registration failed');
+        console.log("SW registration failed");
       }
     }
   };
@@ -251,7 +261,7 @@ const App = () => {
       const data = await response.json();
       setProducts(data);
     } catch (error) {
-      console.error('Error loading products:', error);
+      console.error("Error loading products:", error);
     }
   };
 
@@ -261,7 +271,7 @@ const App = () => {
       const data = await response.json();
       setStats(data);
     } catch (error) {
-      console.error('Error loading stats:', error);
+      console.error("Error loading stats:", error);
     }
   };
 
@@ -278,25 +288,27 @@ const App = () => {
   };
 
   const handleDelete = async (id) => {
-    if (confirm('Are you sure you want to delete this product?')) {
+    if (confirm("Are you sure you want to delete this product?")) {
       try {
-        await fetch(`${API_BASE}/products/${id}`, { method: 'DELETE' });
+        await fetch(`${API_BASE}/products/${id}`, { method: "DELETE" });
         loadProducts();
         loadStats();
       } catch (error) {
-        console.error('Error deleting product:', error);
+        console.error("Error deleting product:", error);
       }
     }
   };
 
-  const filteredProducts = products.filter(product => {
-    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         product.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === '' || product.category === selectedCategory;
+  const filteredProducts = products.filter((product) => {
+    const matchesSearch =
+      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory =
+      selectedCategory === "" || product.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
-  const categories = [...new Set(products.map(p => p.category))];
+  const categories = [...new Set(products.map((p) => p.category))];
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -306,7 +318,9 @@ const App = () => {
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center">
               <i className="fas fa-warehouse text-2xl text-blue-500 mr-3"></i>
-              <h1 className="text-2xl font-bold text-gray-900">Inventory Manager</h1>
+              <h1 className="text-2xl font-bold text-gray-900">
+                Simon Inventory Manager
+              </h1>
             </div>
             <button
               onClick={() => {
@@ -350,8 +364,10 @@ const App = () => {
                 className="w-full p-2 border border-gray-300 rounded-lg"
               >
                 <option value="">All Categories</option>
-                {categories.map(category => (
-                  <option key={category} value={category}>{category}</option>
+                {categories.map((category) => (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
                 ))}
               </select>
             </div>
@@ -360,7 +376,7 @@ const App = () => {
 
         {/* Products Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredProducts.map(product => (
+          {filteredProducts.map((product) => (
             <ProductCard
               key={product.id}
               product={product}
@@ -394,4 +410,4 @@ const App = () => {
 };
 
 // Render the app
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById("root"));
