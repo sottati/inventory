@@ -40,6 +40,12 @@ Las máquinas virtuales actúan como servidores web que ejecutan la aplicación:
 La aplicación se despliega en EC2 y se mantiene actualizada automáticamente mediante GitHub Actions.
 Para la primera instancia EC2, se hace una creacion de forma manual y via terminal se clona el repo, se instalan las dependencias necesarias, y se configura el **nohup** para que corra constantemente
 
+EC2 corriendo
+![EC2 corriendo]("ec2-running.png")
+
+EC2 corriendo con nohup
+![EC2 corriendo con nohup]("ec2-running-nohup.png")
+
 1. **Setup inicial en EC2**:
 
    - Instalar Node.js, Git y PM2
@@ -73,6 +79,9 @@ Deployment gestionado por AWS:
 1. **Crear aplicación en Elastic Beanstalk**
 2. **Configurar variables de entorno** en la consola de EB
 3. **Deploy** mediante CLI o consola web
+
+EC2 corriendo con nohup
+![Elastic Beanstalk]("elastic-beanstalk.png")
 
 ### Security Groups AWS
 
